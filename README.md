@@ -247,6 +247,22 @@ Covers:
 - Common issues & solutions
 - Next steps (scaling, updating, monitoring)
 
+### Visual Guides
+
+Prefer visual representations? Check these:
+🎯 **[MINIKUBE_FLOWCHARTS.md](docs/MINIKUBE_FLOWCHARTS.md)** - Visual process flows, architecture diagrams, and decision trees
+- Setup process flowchart
+- Docker environment configuration visualization
+- Kubernetes object relationships
+- Request flow example
+- Pod startup sequence
+- Troubleshooting decision tree
+
+### Quick Reference
+
+For a one-page cheatsheet of common commands:
+📄 **[MINIKUBE_CHEATSHEET.md](docs/MINIKUBE_CHEATSHEET.md)**
+
 ### Common Tasks
 
 ```bash
