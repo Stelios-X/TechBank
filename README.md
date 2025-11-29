@@ -201,17 +201,53 @@ cd services/api-gateway && mvn spring-boot:run
 
 ## ☸️ Minikube Deployment
 
+### Architecture: Minikube → Kubernetes → Docker
+
+Minikube creates a lightweight VM (or uses local environment) that runs Kubernetes. Inside that Kubernetes cluster, **Docker is used as the container runtime** to execute your services:
+
+```
+Your Host Machine
+       ↓
+Minikube VM/Local Environment (Virtual Machine)
+       ↓
+Kubernetes Cluster (Orchestrator)
+       ↓
+Docker Daemon (Container Runtime)
+       ↓
+Service Containers (account-service, transaction-service, api-gateway, postgres)
+```
+
+### How It Works
+
+1. **Minikube VM/Environment**: Runs a complete Kubernetes cluster locally
+2. **Kubernetes**: Orchestrates container deployment and management
+3. **Docker**: Container runtime inside Kubernetes that actually runs your services
+4. **Docker Image Build**: Build happens inside Minikube (via `eval $(minikube docker-env)`)
+5. **Service Deployment**: Kubernetes pulls built images and deploys containers
+
 ### First-Time Setup
 
 ```bash
+# Start Minikube (creates a VM with Kubernetes inside)
 minikube start --cpus=4 --memory=8192
+
+# Deploy TechBank (builds Docker images inside Minikube's Docker, then deploys via Kubernetes)
 bash scripts/deploy-minikube.sh
 ```
+
+### How the Deploy Script Works
+
+The `deploy-minikube.sh` script:
+1. Starts Minikube if not running
+2. Sets local Docker client to use **Minikube's Docker daemon** (`eval $(minikube docker-env)`)
+3. Builds Docker images **inside Minikube** (not on your host machine)
+4. Applies Kubernetes manifests to orchestrate those images
+5. Kubernetes manages the containers using Docker as the runtime
 
 ### Access Services
 
 ```bash
-# Forward API Gateway port
+# Forward API Gateway port (communicates with Kubernetes inside Minikube)
 kubectl port-forward -n techbank svc/api-gateway 8000:8000
 
 # Forward Account Service
