@@ -217,44 +217,58 @@ Docker Daemon (Container Runtime)
 Service Containers (account-service, transaction-service, api-gateway, postgres)
 ```
 
-### How It Works
-
-1. **Minikube VM/Environment**: Runs a complete Kubernetes cluster locally
-2. **Kubernetes**: Orchestrates container deployment and management
-3. **Docker**: Container runtime inside Kubernetes that actually runs your services
-4. **Docker Image Build**: Build happens inside Minikube (via `eval $(minikube docker-env)`)
-5. **Service Deployment**: Kubernetes pulls built images and deploys containers
-
-### First-Time Setup
+### Quick Start
 
 ```bash
-# Start Minikube (creates a VM with Kubernetes inside)
+# 1. Build all services (Maven)
+bash scripts/build.sh
+
+# 2. Start Minikube VM with Kubernetes inside
 minikube start --cpus=4 --memory=8192
 
-# Deploy TechBank (builds Docker images inside Minikube's Docker, then deploys via Kubernetes)
+# 3. Deploy to Minikube (builds Docker images & applies Kubernetes manifests)
 bash scripts/deploy-minikube.sh
+
+# 4. Access API Gateway
+kubectl port-forward -n techbank svc/api-gateway 8000:8000
+# Visit http://localhost:8000
 ```
 
-### How the Deploy Script Works
+### Detailed Setup Guide
 
-The `deploy-minikube.sh` script:
-1. Starts Minikube if not running
-2. Sets local Docker client to use **Minikube's Docker daemon** (`eval $(minikube docker-env)`)
-3. Builds Docker images **inside Minikube** (not on your host machine)
-4. Applies Kubernetes manifests to orchestrate those images
-5. Kubernetes manages the containers using Docker as the runtime
+For comprehensive step-by-step instructions with troubleshooting, see:
+📖 **[MINIKUBE_SETUP.md](docs/MINIKUBE_SETUP.md)**
 
-### Access Services
+Covers:
+- Prerequisites verification
+- Detailed architecture explanation
+- Phase-by-phase setup walkthrough
+- Verification commands
+- Common issues & solutions
+- Next steps (scaling, updating, monitoring)
+
+### Common Tasks
 
 ```bash
-# Forward API Gateway port (communicates with Kubernetes inside Minikube)
-kubectl port-forward -n techbank svc/api-gateway 8000:8000
+# Monitor pod status (real-time)
+kubectl get pods -n techbank -w
 
-# Forward Account Service
+# View service logs
+kubectl logs -n techbank -l app=api-gateway -f
+
+# Access individual services
 kubectl port-forward -n techbank svc/account-service 8001:8001
-
-# Forward Transaction Service
 kubectl port-forward -n techbank svc/transaction-service 8002:8002
+
+# Scale a service
+kubectl scale deployment account-service -n techbank --replicas=3
+
+# Open Kubernetes Dashboard
+minikube dashboard
+
+# Cleanup
+kubectl delete namespace techbank
+minikube stop  # or: minikube delete
 ```
 
 ### Scaling Services
