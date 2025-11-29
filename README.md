@@ -315,12 +315,29 @@ kubectl get deployment -n techbank
 
 ## 🐛 Troubleshooting
 
+### Quick Issues
+
 | Error | Solution |
 |-------|----------|
 | Port 5432 already in use | `docker ps` then `docker stop <container_id>` |
 | Connection refused | Wait for services to be ready, check `docker logs` |
 | Pod CrashLoopBackOff | Check logs: `kubectl logs <pod> -n techbank` |
 | ImagePullBackOff | Build image first: `docker build -t <service>:1.0.0 .` |
+
+### Comprehensive Troubleshooting
+
+For detailed troubleshooting with step-by-step solutions:
+🔧 **[TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)**
+
+Covers 15+ common issues:
+- Maven build failures
+- Java version mismatches
+- Docker/Minikube startup issues
+- ImagePullBackOff problems
+- Pod crash loop debugging
+- Database connection issues
+- Network access problems
+- Debugging techniques and workflows
 
 ## 📚 Additional Resources
 
