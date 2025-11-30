@@ -5,7 +5,8 @@ set -e
 echo "🏗️  TechBank Build Script"
 echo "=========================="
 
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+#PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Build parent and shared libraries
 echo "📦 Building parent POM and shared libraries..."
