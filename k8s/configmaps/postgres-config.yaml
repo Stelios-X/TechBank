@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: postgres-config
-  namespace: techbank
-data:
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: postgres
